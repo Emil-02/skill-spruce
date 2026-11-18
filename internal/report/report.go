@@ -33,6 +33,9 @@ func renderText(w io.Writer, p Payload) error {
 	var b strings.Builder
 	fmt.Fprintf(&b, "skill-spruce — %s\n", p.Root)
 	b.WriteString(strings.Repeat("─", 56) + "\n")
+	if len(p.Report.Files) == 0 {
+		b.WriteString("! tidak ada SKILL.md / AGENTS.md yang bisa diaudit\n")
+	}
 	for _, r := range p.Report.Results {
 		mark := "✓"
 		if r.Status == "warn" {

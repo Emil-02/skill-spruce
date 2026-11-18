@@ -48,6 +48,9 @@ func Evaluate(docs []scan.Document, cfg config.Config) Report {
 	for _, id := range ids {
 		res := combined[id]
 		rep.Results = append(rep.Results, res)
+		if res.Status == "skip" {
+			continue
+		}
 		total += float64(res.Weight)
 		switch res.Status {
 		case "pass":

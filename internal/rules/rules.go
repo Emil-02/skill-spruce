@@ -39,6 +39,13 @@ func (b base) Title() string             { return b.title }
 func (b base) Weight() int               { return b.weight }
 func (b base) Severity() config.Severity { return b.severity }
 
+func skipNonSkill(r Rule, doc scan.Document) (Result, bool) {
+	if doc.Kind == "" || doc.Kind == "skill" {
+		return Result{}, false
+	}
+	return result(r, doc, "skip", "hanya berlaku untuk SKILL.md", ""), true
+}
+
 func result(r Rule, doc scan.Document, status, message, hint string) Result {
 	return Result{
 		ID: r.ID(), Title: r.Title(), Status: status, Severity: r.Severity(),
@@ -49,6 +56,9 @@ func result(r Rule, doc scan.Document, status, message, hint string) Result {
 type Frontmatter struct{ base }
 
 func (r Frontmatter) Run(_ context.Context, doc scan.Document) Result {
+	if res, ok := skipNonSkill(r, doc); ok {
+		return res
+	}
 	if strings.TrimSpace(doc.Frontmatter) == "" {
 		return result(r, doc, "fail", "tidak ada frontmatter", "tambahkan blok --- dengan name dan description")
 	}
@@ -69,6 +79,9 @@ func (r Frontmatter) Run(_ context.Context, doc scan.Document) Result {
 type Description struct{ base }
 
 func (r Description) Run(_ context.Context, doc scan.Document) Result {
+	if res, ok := skipNonSkill(r, doc); ok {
+		return res
+	}
 	fm := strings.ToLower(doc.Frontmatter)
 	desc := strings.ToLower(doc.Frontmatter)
 	for _, key := range []string{"name:", "description:", "license:", "allowed-tools:", ">", "|"} {
@@ -187,6 +200,9 @@ func (r AgentCoverage) Run(_ context.Context, doc scan.Document) Result {
 type Progressive struct{ base }
 
 func (r Progressive) Run(_ context.Context, doc scan.Document) Result {
+	if res, ok := skipNonSkill(r, doc); ok {
+		return res
+	}
 	if strings.Contains(doc.Body, "references/") {
 		return result(r, doc, "pass", "", "")
 	}

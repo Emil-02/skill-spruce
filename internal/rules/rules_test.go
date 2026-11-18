@@ -40,6 +40,20 @@ func TestDescriptionPlaceholder(t *testing.T) {
 	}
 }
 
+func TestSkillOnlyRulesSkipAgentsFile(t *testing.T) {
+	agents := doc("isi", "")
+	agents.Kind = "agents"
+	if got := (Frontmatter{}).Run(context.Background(), agents); got.Status != "skip" {
+		t.Fatalf("frontmatter harus di-skip untuk AGENTS.md: %+v", got)
+	}
+	if got := (Description{}).Run(context.Background(), agents); got.Status != "skip" {
+		t.Fatalf("description harus di-skip: %+v", got)
+	}
+	if got := (Progressive{}).Run(context.Background(), agents); got.Status != "skip" {
+		t.Fatalf("progressive harus di-skip: %+v", got)
+	}
+}
+
 func TestAllWeights(t *testing.T) {
 	total := 0
 	for _, r := range All() {

@@ -11,6 +11,7 @@ import (
 
 type Document struct {
 	Path        string `json:"path"`
+	Kind        string `json:"kind"`
 	Frontmatter string `json:"frontmatter"`
 	Body        string `json:"body"`
 }
@@ -45,12 +46,20 @@ func Find(root string, cfg config.Config) ([]Document, error) {
 		if err != nil {
 			return nil
 		}
+		text := string(raw)
+		if strings.Contains(text, "BEGIN:nextjs-agent-rules") {
+			return nil
+		}
 		rel, err := filepath.Rel(root, path)
 		if err != nil {
 			rel = path
 		}
-		fm, body := splitFrontmatter(string(raw))
-		docs = append(docs, Document{Path: filepath.ToSlash(rel), Frontmatter: fm, Body: body})
+		kind := "agents"
+		if strings.EqualFold(d.Name(), "skill.md") {
+			kind = "skill"
+		}
+		fm, body := splitFrontmatter(text)
+		docs = append(docs, Document{Path: filepath.ToSlash(rel), Kind: kind, Frontmatter: fm, Body: body})
 		return nil
 	})
 	return docs, err

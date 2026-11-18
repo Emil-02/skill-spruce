@@ -16,6 +16,7 @@ func TestFindAndSplit(t *testing.T) {
 		".cursor/rules/demo.mdc":  "---\ndescription: x\n---\nrule\n",
 		"examples/bad/SKILL.md":   "# jangan\n",
 		"node_modules/x/SKILL.md": "# x\n",
+		"next/AGENTS.md":          "<!-- BEGIN:nextjs-agent-rules -->\natur otomatis\n",
 	}
 	for p, c := range files {
 		full := filepath.Join(root, p)
@@ -34,8 +35,11 @@ func TestFindAndSplit(t *testing.T) {
 		t.Fatalf("dapat %d dokumen: %+v", len(docs), docs)
 	}
 	for _, d := range docs {
-		if d.Path == "examples/bad/SKILL.md" || d.Path == "node_modules/x/SKILL.md" {
-			t.Fatal("direktori yang dilewati tetap dipindai:", d.Path)
+		if d.Path == "examples/bad/SKILL.md" || d.Path == "node_modules/x/SKILL.md" || d.Path == "next/AGENTS.md" {
+			t.Fatal("file yang dilewati tetap dipindai:", d.Path)
+		}
+		if d.Path == "SKILL.md" && d.Kind != "skill" {
+			t.Fatal("SKILL.md harus bertipe skill")
 		}
 	}
 	var skill Document
