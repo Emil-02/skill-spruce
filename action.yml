@@ -1,0 +1,27 @@
+name: skill-spruce
+description: Audit kualitas SKILL.md dan AGENTS.md untuk AI coding agent
+author: Emil-02
+
+inputs:
+  path:
+    description: Direktori yang diperiksa
+    required: false
+    default: .
+  format:
+    description: text | json | sarif | badge
+    required: false
+    default: text
+  fail-on:
+    description: low | medium | high | critical
+    required: false
+    default: high
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+    - name: Jalankan audit
+      shell: bash
+      run: go run github.com/Emil-02/skill-spruce/cmd/skill-spruce@latest check --format "${{ inputs.format }}" --ci --fail-on "${{ inputs.fail-on }}" "${{ inputs.path }}"

@@ -1,0 +1,12 @@
+---
+name: Bug
+about: Laporkan hasil audit yang salah atau aturan yang terlalu ketat
+title: 'fix: '
+labels: bug
+---
+
+Versi skill-spruce:
+Perintah yang dijalankan:
+Aturan yang terdampak:
+Contoh SKILL.md (tanpa data sensitif):
+Hasil yang diharapkan:

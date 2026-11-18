@@ -1,0 +1,6 @@
+/skill-spruce
+dist
+coverage
+*.sarif
+.env
+.env.*
