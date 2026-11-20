@@ -61,7 +61,7 @@ Rencana lengkap dan alasan tiap fase ada di [`docs/PLAN.md`](docs/PLAN.md). Arsi
 ## Hubungan dengan project saya
 
 - [`jaga`](https://github.com/Emil-02/jaga) menjaga **kode**.
-- [`jaga-skill`](https://github.com/Emil-02/jaga-skill) menjaga **cara agent bekerja**.
+- [`jaga-skill`](https://github.com/Emil-02/jaga/tree/main/skills/jaga-skill) menjaga **cara agent bekerja**.
 - `skill-spruce` menjaga **mutu aturan agent itu sendiri**.
 
 ## Lisensi
